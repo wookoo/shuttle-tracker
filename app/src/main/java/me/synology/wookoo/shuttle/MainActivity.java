@@ -11,10 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -24,6 +30,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     EditText lat_text;
     EditText long_text;
+    NaverMap naverMap;
+
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,29 +63,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 double lon = Double.parseDouble(String.valueOf(long_text.getText()));
                 Log.d("위도 경도 " , lat + " " + lon);
                 marker.setPosition(new LatLng(lat,lon));
+                naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
             }
         });
 
 
-       // marker.setMap(naverMap);
+
+
+        // marker.setMap(naverMap);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(3000);
+                    Socket socket = new Socket("192.168.1.2",8787);
+                    out = new ObjectOutputStream(socket.getOutputStream());
+                    in = new ObjectInputStream(socket.getInputStream());
 
-                    runOnUiThread(new Runnable() { //ui thread 에서 call 을 해야됨
-                        @Override
-                        public void run() {
-                            marker.setPosition(new LatLng(37.57,126.978));
-                        }
-                    });
-
-                } catch (InterruptedException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+                while(true){
+                    try {
+                        String received = (String)in.readObject();
+                        Log.d("받아온 값",received);
 
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
             }
         }).start();
 
@@ -85,9 +105,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {//콜백으로 돌려야
-
+        this.naverMap = naverMap;
         marker.setMap(naverMap);
 
 
+    }
+
+    private class ServerData{
+        double lat;
+        double lon;
+
+        public double getLat() {
+            return lat;
+        }
+
+        public double getLon() {
+            return lon;
+        }
     }
 }
