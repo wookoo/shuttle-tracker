@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     EditText lat_text;
     EditText long_text;
-    NaverMap naverMap;
+    NaverMap naverMap = null;
 
     private ObjectInputStream in;
     private ObjectOutputStream out;
@@ -85,8 +85,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 while(true){
                     try {
-                        String received = (String)in.readObject();
+                        String received = (String) in.readObject();
+                        String[] temp = received.split(",");
                         Log.d("받아온 값",received);
+                        if(naverMap != null){
+                            double lat = Double.parseDouble(temp[0]);
+                            double lon = Double.parseDouble(temp[1]);
+                            Log.d("받아온 값",lat + " " + lon);
+                            runOnUiThread(new Runnable() { //메인 스레드에서 돌려야됨
+                                @Override
+                                public void run() {
+                                    marker.setPosition(new LatLng(lat,lon));
+                                    naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
+                                }
+                            });
+
+                        }
+
+
 
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
@@ -111,16 +127,5 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private class ServerData{
-        double lat;
-        double lon;
 
-        public double getLat() {
-            return lat;
-        }
-
-        public double getLon() {
-            return lon;
-        }
-    }
 }
