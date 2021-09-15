@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraUpdate;
@@ -32,6 +33,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     EditText lat_text;
     EditText long_text;
     NaverMap naverMap = null;
+    boolean lock_map = false;
+    LinearLayout map_layout;
     //private ObjectInputStream in;
     //private ObjectOutputStream out;
 
@@ -73,6 +76,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map_lock_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(lock_map){//지도 잠금된 경우
+                    map_lock_btn.setText("지도 잠금");
+                    lock_map = !lock_map;
+
+                }
+                else{
+                    map_lock_btn.setText("지도 잠금 해제");
+                    lock_map = !lock_map;
+
+
+                }
+
 
             }
         });
