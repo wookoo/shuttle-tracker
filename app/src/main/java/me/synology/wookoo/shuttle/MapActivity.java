@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.NaverMap;
@@ -34,7 +36,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     EditText long_text;
     NaverMap naverMap = null;
     boolean lock_map = false;
-    LinearLayout map_layout;
+    double lat = 37.5670135;
+    double lon = 126.9783740;
     //private ObjectInputStream in;
     //private ObjectOutputStream out;
 
@@ -64,8 +67,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         change_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                double lat = Double.parseDouble(String.valueOf(lat_text.getText()));
-                double lon = Double.parseDouble(String.valueOf(long_text.getText()));
+                lat = Double.parseDouble(String.valueOf(lat_text.getText()));
+                lon = Double.parseDouble(String.valueOf(long_text.getText()));
                 Log.d("위도 경도 " , lat + " " + lon);
                 marker.setPosition(new LatLng(lat,lon));
                 naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
@@ -95,6 +98,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         to_bus_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
+                Toast.makeText(MapActivity.this,"지도중심이 버스 위치로 이동합니다",Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -159,7 +164,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(@NonNull NaverMap naverMap) {//콜백으로 돌려야
         this.naverMap = naverMap;
         marker.setMap(naverMap);
-
 
     }
 }
