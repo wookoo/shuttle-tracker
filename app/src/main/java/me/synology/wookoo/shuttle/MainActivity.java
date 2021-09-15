@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,13 +28,14 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent gotoMap = new Intent(MainActivity.this,MapActivity.class);
+        startActivity(gotoMap);
 
     }
 

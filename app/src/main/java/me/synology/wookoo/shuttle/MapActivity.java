@@ -18,15 +18,22 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.OverlayImage;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     Marker marker;
 
     Button change_btn;
+    Button map_lock_btn;
+    Button to_bus_btn;
 
     EditText lat_text;
     EditText long_text;
     NaverMap naverMap = null;
+    //private ObjectInputStream in;
+    //private ObjectOutputStream out;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +51,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         lat_text = findViewById(R.id.latitude_text);
         long_text = findViewById(R.id.longitude_text);
         change_btn = findViewById(R.id.chage_marker_btn);
+        map_lock_btn = findViewById(R.id.button_lock_map);
+        to_bus_btn = findViewById(R.id.button_to_bus);
 
         marker  = new Marker();
         marker.setPosition(new LatLng(37.5670135, 126.9783740));
@@ -57,6 +66,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Log.d("위도 경도 " , lat + " " + lon);
                 marker.setPosition(new LatLng(lat,lon));
                 naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
+
+            }
+        });
+
+        map_lock_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        to_bus_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
