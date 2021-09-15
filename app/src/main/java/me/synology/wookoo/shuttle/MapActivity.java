@@ -71,7 +71,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 lon = Double.parseDouble(String.valueOf(long_text.getText()));
                 Log.d("위도 경도 " , lat + " " + lon);
                 marker.setPosition(new LatLng(lat,lon));
-                naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
+                if(lock_map){
+                    naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
+                }
+
 
             }
         });
@@ -82,11 +85,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if(lock_map){//지도 잠금된 경우
                     map_lock_btn.setText("지도 잠금");
                     lock_map = !lock_map;
+                    Toast.makeText(MapActivity.this,"지도가 자동으로 움직이지 않습니다",Toast.LENGTH_SHORT).show();
+                    
 
                 }
                 else{
                     map_lock_btn.setText("지도 잠금 해제");
                     lock_map = !lock_map;
+                    Toast.makeText(MapActivity.this,"지도가 자동으로 움직입니다",Toast.LENGTH_SHORT).show();
 
 
                 }
