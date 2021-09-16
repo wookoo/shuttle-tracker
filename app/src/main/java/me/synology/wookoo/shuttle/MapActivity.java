@@ -2,8 +2,14 @@ package me.synology.wookoo.shuttle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,6 +47,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     //private ObjectInputStream in;
     //private ObjectOutputStream out;
 
+    private LocationManager locationManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +62,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         mapFragment.getMapAsync(this); //항상 콜백으로 돌려야됨됨
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+
+
 
         lat_text = findViewById(R.id.latitude_text);
         long_text = findViewById(R.id.longitude_text);
@@ -108,6 +124,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Toast.makeText(MapActivity.this,"지도중심이 버스 위치로 이동합니다",Toast.LENGTH_SHORT).show();
 
             }
+        });
+
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                if(location.getProvider().equals(LocationManager.GPS_PROVIDER)){
+                    Log.d("GPS","refresh");
+                    lat = location.getLatitude();
+                    lon = location.getLongitude();
+                    Log.d("lat",location.getLatitude() + "");
+                    Log.d("lon",location.getLongitude() + " ");
+                    marker.setPosition(new LatLng(lat,lon));
+                    if(naverMap != null){
+                        naverMap.moveCamera(CameraUpdate.scrollTo(new LatLng(lat,lon)));
+                    }
+
+
+                }
+            }
+
         });
 
 
