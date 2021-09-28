@@ -34,8 +34,9 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent gotoMap = new Intent(MainActivity.this,MapActivity.class);
+        Intent gotoMap = new Intent(MainActivity.this,RegisterActivity.class);
         startActivity(gotoMap);
+
 
     }
 
