@@ -12,45 +12,51 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="wrap_content"
+            android:id="@+id/editTextRegisterID"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="아이디" />
 
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/editTextRegisterPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="비밀번호"
             android:inputType="textPassword" />
 
         <EditText
-            android:id="@+id/editTextTextPassword2"
+            android:id="@+id/editTextRegisterPasswordRe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="비밀번호 재입력"
             android:inputType="textPassword" />
 
         <EditText
-            android:id="@+id/editTextNumber"
+            android:id="@+id/editTextRegisterPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="업체 고유번호"
             android:inputType="number" />
         <EditText
-            android:id="@+id/editTextTextPersonNam1"
-            android:layout_width="wrap_content"
+            android:id="@+id/editTextRegisterName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:hint="이름" />
       <EditText
+          android:id="@+id/editTextRegisterPhone"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:hint="연락처"
           android:inputType="phone"/>
         <Button
+            android:id="@+id/registerBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="회원가입"/>
