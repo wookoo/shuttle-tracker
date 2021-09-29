@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -44,27 +46,36 @@ public class RegisterActivity extends AppCompatActivity {
                 String primary = primaryText.getText().toString();
                 String name = nameText.getText().toString();
                 String phone = phoneText.getText().toString();
+                JSONObject input = new JSONObject();
+                try{
+
+                    input.put("id","apple");
+                    input.put("password","1234");
+                    input.put("phone","01012345678");
+                    input.put("name","djaw");
+                    input.put("type",2);
 
 
-                HashMap<String,Object> input = new HashMap<>();
-                input.put("id","apple");
-                input.put("password","1234");
-                input.put("phone","01012345678");
-                input.put("name","djaw");
-                input.put("type",2);
+
+
+
+                }
+                catch (Exception e){
+
+                }
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("http://192.168.1.2:8000")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 RetrofitAPI r = retrofit.create(RetrofitAPI.class);
-                Call<registerDATA> call = r.register(input);
-
+                Log.d("넣은거",input.toString());
+                Call<registerDATA> call = r.register(input.toString());
                 call.enqueue(new Callback<registerDATA>() {
                     @Override
                     public void onResponse(Call<registerDATA> call, Response<registerDATA> response) {
                         registerDATA r = response.body();
-                        Log.d("rr",response.body().toString()+"");
+                        Log.d("rr",r.getStatus()+"");
                     }
 
                     @Override
@@ -72,6 +83,9 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.d("rt",t.getMessage()+"");
                     }
                 });
+
+
+
 
                 String idRegex = "^[a-z]{1}[a-z0-9_]{5,10}$";
                 if(!id.matches(idRegex)){

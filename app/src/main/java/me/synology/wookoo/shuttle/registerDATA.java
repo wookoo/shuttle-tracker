@@ -3,11 +3,11 @@ package me.synology.wookoo.shuttle;
 import com.google.gson.annotations.SerializedName;
 
 public class registerDATA {
-    @SerializedName("status")
+    @SerializedName(value = "status")
     private boolean status;
 
     public boolean getStatus(){
-        return status;
+        return this.status;
     }
 
 
