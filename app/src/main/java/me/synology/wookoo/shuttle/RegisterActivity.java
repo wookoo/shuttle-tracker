@@ -37,12 +37,41 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String id = IDText.getText().toString();
                 String pw = passWordText.getText().toString();
                 String pwRe = passWordReText.getText().toString();
                 String primary = primaryText.getText().toString();
                 String name = nameText.getText().toString();
                 String phone = phoneText.getText().toString();
+
+
+                HashMap<String,Object> input = new HashMap<>();
+                input.put("id","apple");
+                input.put("password","1234");
+                input.put("phone","01012345678");
+                input.put("name","djaw");
+                input.put("type",2);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://192.168.1.2:8000")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                RetrofitAPI r = retrofit.create(RetrofitAPI.class);
+                Call<registerDATA> call = r.register(input);
+
+                call.enqueue(new Callback<registerDATA>() {
+                    @Override
+                    public void onResponse(Call<registerDATA> call, Response<registerDATA> response) {
+                        registerDATA r = response.body();
+                        Log.d("rr",response.body().toString()+"");
+                    }
+
+                    @Override
+                    public void onFailure(Call<registerDATA> call, Throwable t) {
+                        Log.d("rt",t.getMessage()+"");
+                    }
+                });
 
                 String idRegex = "^[a-z]{1}[a-z0-9_]{5,10}$";
                 if(!id.matches(idRegex)){
@@ -73,31 +102,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,"전화번호를 확인해주세요",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8000/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
 
-                RetrofitAPI retrofitapi = retrofit.create(RetrofitAPI.class);
-                HashMap<String,Object> input = new HashMap<>();
-                input.put("id",id);
-                input.put("password",pw);
-                input.put("phone",phone);
-                input.put("name",name);
-                input.put("type",2);
 
-                retrofitapi.register(input).enqueue(new Callback<registerDATA>() {
-                    @Override
-                    public void onResponse(Call<registerDATA> call, Response<registerDATA> response) {
-                        registerDATA r = response.body();
-                        Log.d("test",""+r.getStatus());
-                    }
 
-                    @Override
-                    public void onFailure(Call<registerDATA> call, Throwable t) {
 
-                    }
-                });
+
 
             }
         });

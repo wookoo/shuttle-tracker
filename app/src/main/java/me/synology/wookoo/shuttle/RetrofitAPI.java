@@ -10,6 +10,6 @@ import retrofit2.http.POST;
 public interface RetrofitAPI {
 
     @FormUrlEncoded
-    @POST("login/register")
+    @POST("login/register/")
     Call<registerDATA> register(@FieldMap HashMap<String,Object> body);
 }
