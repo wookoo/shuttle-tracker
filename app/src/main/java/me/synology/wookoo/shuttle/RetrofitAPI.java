@@ -13,5 +13,5 @@ import retrofit2.http.POST;
 public interface RetrofitAPI {
 
     @POST("login/register/")
-    Call<registerDATA> register(@Body String body);
+    Call<registerDATA> register(@Body JSONObject body);
 }

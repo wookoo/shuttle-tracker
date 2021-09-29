@@ -20,7 +20,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText IDText,passWordText,passWordReText,primaryText,nameText,phoneText;
+    EditText IDText,passWordText,passWordReText,companyText,nameText,phoneText;
     Button registerBtn;
 
     @Override
@@ -31,7 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         IDText = findViewById(R.id.editTextRegisterID);
         passWordText = findViewById(R.id.editTextRegisterPassword);
         passWordReText = findViewById(R.id.editTextRegisterPasswordRe);
-        primaryText = findViewById(R.id.editTextRegisterPrimary);
+        companyText = findViewById(R.id.editTextRegisterCompany);
         nameText = findViewById(R.id.editTextRegisterName);
         phoneText = findViewById(R.id.editTextRegisterPhone);
         registerBtn = findViewById(R.id.registerBtn);
@@ -43,46 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String id = IDText.getText().toString();
                 String pw = passWordText.getText().toString();
                 String pwRe = passWordReText.getText().toString();
-                String primary = primaryText.getText().toString();
+                String company = companyText.getText().toString();
                 String name = nameText.getText().toString();
                 String phone = phoneText.getText().toString();
-                JSONObject input = new JSONObject();
-                try{
-
-                    input.put("id","apple");
-                    input.put("password","1234");
-                    input.put("phone","01012345678");
-                    input.put("name","djaw");
-                    input.put("type",2);
-
-
-
-
-
-                }
-                catch (Exception e){
-
-                }
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.2:8000")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-                RetrofitAPI r = retrofit.create(RetrofitAPI.class);
-                Log.d("넣은거",input.toString());
-                Call<registerDATA> call = r.register(input.toString());
-                call.enqueue(new Callback<registerDATA>() {
-                    @Override
-                    public void onResponse(Call<registerDATA> call, Response<registerDATA> response) {
-                        registerDATA r = response.body();
-                        Log.d("rr",r.getStatus()+"");
-                    }
-
-                    @Override
-                    public void onFailure(Call<registerDATA> call, Throwable t) {
-                        Log.d("rt",t.getMessage()+"");
-                    }
-                });
 
 
 
@@ -101,21 +64,56 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,"재입력한 비밀번호가 일치하지 않습니다",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String primaryRegex = "^[0-9]{6}";
-                if(!primary.matches(primaryRegex)){
+                String companyRegex = "^[0-9]{6}";
+                if(!company.matches(companyRegex)){
                     Toast.makeText(RegisterActivity.this,"업체 번호는 6자리 숫자입니다",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //String nameRegex = "^[가-힣]{2,4}$";
-                //if(!name.matches(nameRegex)){
-                //    Toast.makeText(RegisterActivity.this,"정확한 이름을 입력해주세요",Toast.LENGTH_SHORT).show();
-                //    return;
-                //}
+                String nameRegex = "^[가-힣]{2,4}$";
+                if(!name.matches(nameRegex)){
+                    Toast.makeText(RegisterActivity.this,"정확한 이름을 입력해주세요",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String phoneRegex = "^010([0-9]{4})([0-9]{4})$";
                 if (!phone.matches(phoneRegex)){
                     Toast.makeText(RegisterActivity.this,"전화번호를 확인해주세요",Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                JSONObject input = new JSONObject();
+                try{
+
+                    input.put("id",id);
+                    input.put("company",company);
+                    input.put("password",pw);
+                    input.put("phone",phone);
+                    input.put("name",name);
+                    input.put("type",2);
+
+                }
+                catch (Exception e){
+
+                }
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://192.168.1.2:8000")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                RetrofitAPI r = retrofit.create(RetrofitAPI.class);
+                Log.d("넣은거",input.toString());
+                Call<registerDATA> call = r.register(input);
+                call.enqueue(new Callback<registerDATA>() {
+                    @Override
+                    public void onResponse(Call<registerDATA> call, Response<registerDATA> response) {
+                        registerDATA r = response.body();
+                        Log.d("rr",r.getStatus()+"");
+                    }
+
+                    @Override
+                    public void onFailure(Call<registerDATA> call, Throwable t) {
+                        Log.d("rt",t.getMessage()+"");
+                    }
+                });
+
 
 
 

@@ -36,7 +36,7 @@
             android:inputType="textPassword" />
 
         <EditText
-            android:id="@+id/editTextRegisterPrimary"
+            android:id="@+id/editTextRegisterCompany"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
