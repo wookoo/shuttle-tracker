@@ -3,10 +3,19 @@ package me.synology.wookoo.shuttle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.HashMap;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText IDText,passWordText,passWordReText,primaryText,nameText,phoneText;
@@ -54,16 +63,45 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,"업체 번호는 6자리 숫자입니다",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String nameRegex = "^[가-힣]{2,4}$";
-                if(!name.matches(nameRegex)){
-                    Toast.makeText(RegisterActivity.this,"정확한 이름을 입력해주세요",Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                //String nameRegex = "^[가-힣]{2,4}$";
+                //if(!name.matches(nameRegex)){
+                //    Toast.makeText(RegisterActivity.this,"정확한 이름을 입력해주세요",Toast.LENGTH_SHORT).show();
+                //    return;
+                //}
                 String phoneRegex = "^010([0-9]{4})([0-9]{4})$";
                 if (!phone.matches(phoneRegex)){
                     Toast.makeText(RegisterActivity.this,"전화번호를 확인해주세요",Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("http://10.0.2.2:8000")
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+
+                RetrofitAPI retrofitapi = retrofit.create(RetrofitAPI.class);
+                HashMap<String,Object> input = new HashMap<>();
+                input.put("id",id);
+                input.put("password",pw);
+                input.put("phone",phone);
+                input.put("name",name);
+                input.put("type",2);
+
+                retrofitapi.register(input).equals(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if(response.isSuccessful()){
+                            String data = response.body();
+                            Log.d("test",data);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.d("fail",t.toString());
+                    }
+                });
+
+
             }
         });
 
