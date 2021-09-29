@@ -74,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://10.0.2.2:8000")
+                        .baseUrl("http://10.0.2.2:8000/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
@@ -86,21 +86,18 @@ public class RegisterActivity extends AppCompatActivity {
                 input.put("name",name);
                 input.put("type",2);
 
-                retrofitapi.register(input).equals(new Callback<String>() {
+                retrofitapi.register(input).enqueue(new Callback<registerDATA>() {
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response.isSuccessful()){
-                            String data = response.body();
-                            Log.d("test",data);
-                        }
+                    public void onResponse(Call<registerDATA> call, Response<registerDATA> response) {
+                        registerDATA r = response.body();
+                        Log.d("test",""+r.getStatus());
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.d("fail",t.toString());
+                    public void onFailure(Call<registerDATA> call, Throwable t) {
+
                     }
                 });
-
 
             }
         });
