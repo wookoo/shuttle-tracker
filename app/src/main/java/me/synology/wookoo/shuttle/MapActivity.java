@@ -76,9 +76,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         map_lock_btn = findViewById(R.id.button_lock_map);
         to_bus_btn = findViewById(R.id.button_to_bus);
 
-        marker  = new Marker();
-        marker.setPosition(new LatLng(37.5670135, 126.9783740));
-        marker.setIcon(OverlayImage.fromResource(R.drawable.ic_bus));
+
 
         change_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,7 +205,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {//콜백으로 돌려야
         this.naverMap = naverMap;
-        marker.setMap(naverMap);
+        Log.d("marker IS NULL",""+ (naverMap==null));
+        if(this.naverMap != null){
+            marker  = new Marker();
+            marker.setPosition(new LatLng(37.5670135, 126.9783740));
+            marker.setIcon(OverlayImage.fromResource(R.drawable.ic_bus));
+            marker.setMap(naverMap);
+        }
+        //marker.setMap(this.naverMap);
 
     }
 }

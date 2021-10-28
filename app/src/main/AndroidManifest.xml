@@ -3,18 +3,21 @@
     package="me.synology.wookoo.shuttle">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
-        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Shuttle">
+        android:theme="@style/Theme.Shuttle"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".BluetoothTestActivity"
+            android:exported="true" />
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
